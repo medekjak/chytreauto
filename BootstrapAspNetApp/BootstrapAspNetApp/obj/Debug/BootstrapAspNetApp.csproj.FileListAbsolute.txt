@@ -1,0 +1,16 @@
+D:\Projects\BootstrapAspNetApp\bin\BootstrapAspNetApp.dll.config
+D:\Projects\BootstrapAspNetApp\bin\BootstrapAspNetApp.dll
+D:\Projects\BootstrapAspNetApp\bin\BootstrapAspNetApp.pdb
+D:\Projects\BootstrapAspNetApp\obj\Debug\BootstrapAspNetApp.csprojResolveAssemblyReference.cache
+D:\Projects\BootstrapAspNetApp\obj\Debug\BootstrapAspNetApp.dll
+D:\Projects\BootstrapAspNetApp\obj\Debug\BootstrapAspNetApp.pdb
+C:\PRACE\BootstrapAspNetApp\bin\BootstrapAspNetApp.dll
+C:\PRACE\BootstrapAspNetApp\bin\BootstrapAspNetApp.pdb
+C:\PRACE\BootstrapAspNetApp\obj\Debug\BootstrapAspNetApp.csprojResolveAssemblyReference.cache
+C:\PRACE\BootstrapAspNetApp\obj\Debug\BootstrapAspNetApp.dll
+C:\PRACE\BootstrapAspNetApp\obj\Debug\BootstrapAspNetApp.pdb
+D:\BootstrapAspNetApp\BootstrapAspNetApp\bin\BootstrapAspNetApp.dll
+D:\BootstrapAspNetApp\BootstrapAspNetApp\bin\BootstrapAspNetApp.pdb
+D:\BootstrapAspNetApp\BootstrapAspNetApp\obj\Debug\BootstrapAspNetApp.csprojResolveAssemblyReference.cache
+D:\BootstrapAspNetApp\BootstrapAspNetApp\obj\Debug\BootstrapAspNetApp.dll
+D:\BootstrapAspNetApp\BootstrapAspNetApp\obj\Debug\BootstrapAspNetApp.pdb
