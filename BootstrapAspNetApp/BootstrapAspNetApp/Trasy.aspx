@@ -175,7 +175,7 @@
                   var str1 = "<a href=# class=\"list-group-item\" onClick=\"LoadTrackPoints('";
                   var str2 = "')\"><img ID=\"Image1\" width=\"100%\"  src =\"";
                   var str3 = "data:image/jpeg;base64,";
-                  var str4 = "\"/><p class=\"list-group-item-text\">Delka: ";
+                  var str4 = "\"/><p class=\"list-group-item-text\"><span class=\"glyphicon glyphicon-road\"></span>";
                   var str5 = "</p></a>";
 
                   for (var i = 0; i < tracks.length; i++) {
