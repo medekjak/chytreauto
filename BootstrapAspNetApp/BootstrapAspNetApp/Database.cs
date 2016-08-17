@@ -172,5 +172,24 @@ AND CU.USERID = U.UserId AND U.UserName ='" + userName + @"'";
             }
             else return null;
         }
+        public DataTable readLastCoordinate(string userName)
+        {
+            if (!string.IsNullOrEmpty(userName))
+            {
+
+                string query = @"SELECT TOP 1 [ID]  ,[DEVICEID],[TIMESTAMP] ,[LAT] ,[LON], [TRACKCREATED]
+  FROM [dbo].[COORDINATES]
+  where DEVICEID in (SELECT [DEVICEID]
+  FROM [dbo].[CUSTOMER_DEVICE]
+  where CUSTOMERID in ( SELECT [CUSTOMERID]
+  FROM [dbo].[CUSTOMER_USER]
+  where userid in  (SELECT [UserId]
+  FROM [dbo].[aspnet_Users]
+  where UserName ='" + userName + @"')))
+                ORDER BY TIMESTAMP DESC";
+                return QueryWrapper(query, "points");
+            }
+            else return null;
+        }
     }
 }

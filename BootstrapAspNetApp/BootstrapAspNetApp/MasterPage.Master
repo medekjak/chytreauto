@@ -30,16 +30,16 @@
     
     <form id="form1" runat="server">
 
-        <ul class="nav nav-tabs nav-justified">
-  <li role="presentation" ><a href="Default.aspx">Úvod</a></li>
-  <li role="presentation"><a href="Members/WebForm1.aspx">Lokalizuj</a></li>
-  <li role="presentation"><a href="Trasy.aspx">Trasy</a></li>
-   <li role="presentation"><a href="#">Statistiky</a></li>
-   <li role="presentation"><asp:LoginStatus ID="LoginStatus1" runat="server" /></li>
+        <ul class="nav nav-pills nav-justified">
+  <li class="active" role="presentation" ><a  href="Default.aspx"><span class="glyphicon glyphicon-home"></span> Úvod</a></li>
+  <li role="presentation"><a href="lokalizuj.aspx"><span class="glyphicon glyphicon-search"></span> Lokalizuj</a></li>
+  <li role="presentation"><a href="Trasy.aspx"><span class="glyphicon glyphicon-road"></span> Trasy</a></li>
+   <li role="presentation"><a href="#"><span class="glyphicon glyphicon-signal"></span> Statistiky</a></li>
+   <li role="presentation"><asp:LoginStatus ID="LoginStatus1" runat="server" LoginText="Přihlásit" LogoutText="Odhlásit" ValidateRequestMode="Enabled" /></li>
 </ul>
         <div class="jumbotron">
         <div class="container text-center">
-            <div class="page-header"> <h1> HOVNO <small>Subtext for header</small></h1>
+            <div class="page-header"> <h1> HOVNO <small>a malý hovno</small></h1>
         </div>
         </div>
 

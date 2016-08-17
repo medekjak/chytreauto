@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Login.aspx" />
+    <Content Include="Lokalizuj.aspx" />
     <Content Include="MasterPage.Master" />
     <Content Include="css\bootstrap-theme.css.map" />
     <Content Include="css\bootstrap-theme.min.css.map" />
@@ -80,7 +81,6 @@
     <Content Include="css\bootstrap-theme.min.css" />
     <Content Include="css\bootstrap.css" />
     <Content Include="css\bootstrap.min.css" />
-    <Content Include="css\sailtracker.css" />
     <Content Include="css\StyleSheet.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="js\bootstrap.js" />
@@ -90,7 +90,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Default.aspx" />
-    <Content Include="Members\WebForm1.aspx" />
     <Content Include="Trasy.aspx" />
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +102,13 @@
     </Compile>
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Lokalizuj.aspx.cs">
+      <DependentUpon>Lokalizuj.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Lokalizuj.aspx.designer.cs">
+      <DependentUpon>Lokalizuj.aspx</DependentUpon>
     </Compile>
     <Compile Include="MasterPage.Master.cs">
       <DependentUpon>MasterPage.Master</DependentUpon>
@@ -119,13 +125,6 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Members\WebForm1.aspx.cs">
-      <DependentUpon>WebForm1.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Members\WebForm1.aspx.designer.cs">
-      <DependentUpon>WebForm1.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Track.cs" />
     <Compile Include="Trasy.aspx.cs">
       <DependentUpon>Trasy.aspx</DependentUpon>
@@ -141,6 +140,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="data\" />
+    <Folder Include="Members\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

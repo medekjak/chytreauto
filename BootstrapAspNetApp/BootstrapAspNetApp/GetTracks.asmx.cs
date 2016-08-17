@@ -65,6 +65,44 @@ namespace BootstrapAspNetApp
             
         }
         [WebMethod]
+        public string GetLastposition()
+        {
+            string userName = "";
+            if (User.Identity.IsAuthenticated)
+            {
+                userName = User.Identity.Name;
+            }
+            else userName = "Administrator";
+            
+
+            DataTable dtPoints;
+            MyDatabase db = new MyDatabase();
+
+            string answer = "[ ";
+
+
+            dtPoints = db.readLastCoordinate(userName);
+                if (dtPoints != null && dtPoints.Rows.Count > 0)
+                {
+                    foreach (DataRow dr in dtPoints.Rows)
+                    {
+                        string lat = dr["LAT"].ToString();
+                        string lng = dr["LON"].ToString();
+                        string tmstmp = dr["TIMESTAMP"].ToString();
+
+                        string id = dr["ID"].ToString();
+
+                        answer += @"{ ""lat"":""" + lat + @""", ""lng"": """ + lng + @""", ""time"":""" + tmstmp + @"""},";
+
+                    }
+                }
+            
+
+            answer = answer.Remove(answer.Length - 1) + " ]";
+            return answer;
+
+        }
+        [WebMethod]
         public string GetTracks(int PageNr)
         {
             Log.writeDebug("GetTracks received parameter : " + PageNr.ToString());
