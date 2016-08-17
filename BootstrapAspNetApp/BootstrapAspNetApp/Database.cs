@@ -159,7 +159,7 @@ AND CU.USERID = U.UserId AND U.UserName ='" + userName + @"'";
   FROM [dbo].[CUSTOMER_USER]
   where userid in  (SELECT [UserId]
   FROM [dbo].[aspnet_Users]
-  where UserName = ='" + userName + "'))) and TRACKCREATED = '" + TrackID + "'";
+  where UserName ='" + userName + "'))) and TRACKCREATED = '" + TrackID + "'";
 
 
 //                string query = @"SELECT coords.ID, [TIMESTAMP] ,[LAT] ,[LON]  

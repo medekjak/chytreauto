@@ -14,3 +14,8 @@ D:\BootstrapAspNetApp\BootstrapAspNetApp\bin\BootstrapAspNetApp.pdb
 D:\BootstrapAspNetApp\BootstrapAspNetApp\obj\Debug\BootstrapAspNetApp.csprojResolveAssemblyReference.cache
 D:\BootstrapAspNetApp\BootstrapAspNetApp\obj\Debug\BootstrapAspNetApp.dll
 D:\BootstrapAspNetApp\BootstrapAspNetApp\obj\Debug\BootstrapAspNetApp.pdb
+D:\AAA_GIT\chytreauto\BootstrapAspNetApp\BootstrapAspNetApp\bin\BootstrapAspNetApp.dll
+D:\AAA_GIT\chytreauto\BootstrapAspNetApp\BootstrapAspNetApp\bin\BootstrapAspNetApp.pdb
+D:\AAA_GIT\chytreauto\BootstrapAspNetApp\BootstrapAspNetApp\obj\Debug\BootstrapAspNetApp.csprojResolveAssemblyReference.cache
+D:\AAA_GIT\chytreauto\BootstrapAspNetApp\BootstrapAspNetApp\obj\Debug\BootstrapAspNetApp.dll
+D:\AAA_GIT\chytreauto\BootstrapAspNetApp\BootstrapAspNetApp\obj\Debug\BootstrapAspNetApp.pdb

@@ -112,7 +112,7 @@
                   
                       success: function (data, status) {
                           var points = JSON.parse(data.d);
-                          console.log(points);
+                          //console.log(points);
                           Addpoints(points);
 
                       },
@@ -132,7 +132,6 @@
 
                   success: function (data, status) {
                       var tracks = JSON.parse(data.d);
-                      console.log(tracks);
                       AddTracks(tracks);
 
                   },
@@ -148,8 +147,7 @@
               var pointArray = [];
               if (points.length > 0) {
                   for (var i = 0; i < points.length; i++) {
-
-                      var point = ol.proj.transform([Number(points[i].lng), Number(points[i].lat)], 'EPSG:4326', 'EPSG:3857')
+                      var point = ol.proj.transform([Number(points[i].lng.replace(",", ".")), Number(points[i].lat.replace(",", "."))], 'EPSG:4326', 'EPSG:3857')
                       pointArray.push(point);
                   }
 
@@ -157,15 +155,16 @@
                       geometry: new ol.geom.LineString(pointArray)
                   });
                   var vectorLine = new ol.source.Vector({});
-                  console.log(featureLine);
                   vectorLine.addFeature(featureLine);
 
                   if (vectorLineLayer != null) {
                       vectorLineLayer.setSource(vectorLine);
                   }
-
+                  
                   var extent = vectorLineLayer.getSource().getExtent();
+                  //console.log(extent);
                   map.getView().fit(extent, map.getSize());
+                  //console.log(map);
               }
 
           }
