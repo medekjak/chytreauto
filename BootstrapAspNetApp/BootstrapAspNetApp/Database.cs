@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Data.SqlClient;
 using System.Data;
+using System.Text;
 
 namespace BootstrapAspNetApp
 {
@@ -188,6 +189,199 @@ AND CU.USERID = U.UserId AND U.UserName ='" + userName + @"'";
   where UserName ='" + userName + @"')))
                 ORDER BY TIMESTAMP DESC";
                 return QueryWrapper(query, "points");
+            }
+            else return null;
+        }
+        public string getDeviceId(string imei)
+        {
+            DataTable container;
+            string commandText = string.Format(@"SELECT top 1 [ID] FROM [dbo].[DEVICE] Where IMEI = '" + imei + "'");
+            container = QueryWrapper(commandText, "deviceId");
+            if (container != null && container.Rows.Count > 0)
+            {
+                return container.Rows[0][0].ToString();
+                Log.writeError("not known IMEI: " + imei);
+            }
+
+            else return "";
+
+
+
+        }
+        public void StoreCoordinates(CoordinatesPointInTime Coordinates)
+        {
+            try
+            {
+                OpenConnection();
+                System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = "INSERT INTO [dbo].[COORDINATES]    ([DEVICEID]  ,[TIMESTAMP]  , [LAT]   ,[LON]   ,[TRACKCREATED]) VALUES ('" + Coordinates.DeviceID + "','" + Coordinates.Time.ToString() + "','" + Coordinates.Latitude.ToString() + "','" + Coordinates.Longitude.ToString() + "',null)";
+                cmd.Connection = connection;
+                cmd.ExecuteNonQuery();
+                connection.Close();
+            }
+            catch (Exception e)
+            {
+                // ConsoleApplication2.EventLogFile.writeLine(e.ToString());
+                Console.WriteLine(e.ToString());
+            }
+
+        }
+        public void StoreEvent(Event _event)
+        {
+            try
+            {
+
+                System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+                cmd.CommandType = System.Data.CommandType.Text;
+                cmd.CommandText = "INSERT INTO [dbo].[EVENTS] ([EVENTTYPE] ,[TIMESTAMP] ,[STOREDTIMESTAMP] ,[DEVICEID]) VALUES ('" + _event.EventType + "' ,'" + _event.Time + "' ,'" + DateTime.UtcNow + "' ,'" + _event.Deviceid + "')";
+
+                cmd.Connection = connection;
+                cmd.ExecuteNonQuery();
+                connection.Close();
+            }
+            catch (Exception e)
+            {
+                // ConsoleApplication2.EventLogFile.writeLine(e.ToString());
+                Console.WriteLine(e.ToString());
+            }
+
+        }
+        public DataTable GetNotProcessedCoordinates()
+        {
+            DataTable container;
+            string commandText = string.Format(@"SELECT [ID]
+      ,[DEVICEID]
+      ,[TIMESTAMP]
+      ,[LAT]
+      ,[LON]
+      ,[TRACKCREATED]
+  FROM [dbo].[COORDINATES]
+  where TRACKCREATED is null and DEVICEID in (SELECT [DEVICEID]
+  FROM [dbo].[COORDINATES]
+  where TRACKCREATED is null
+  group by DEVICEID
+  having MAX(TIMESTAMP) < DATEADD(MINUTE, -30, SYSUTCDATETIME()))
+  order by DEVICEID asc, TIMESTAMP asc");
+            container = QueryWrapper(commandText, "notProcessedData");
+            if (container != null && container.Rows.Count > 0)
+            {
+                return container;
+            }
+            else return null;
+        }
+        public void storeTrack(Track _track)
+        {
+            Byte[] resultImgInBytes = (Byte[])new System.Drawing.ImageConverter().ConvertTo(_track.Img, typeof(Byte[]));
+            StringBuilder commandText = new StringBuilder();
+
+            commandText.Append(@"INSERT INTO [dbo].[TRACKS]
+           ([ID],
+            [DEVICEID]
+           ,[STARTTIMESTAMP]
+           ,[ENDTIMESTAMP]
+           ,[STARTLOCATION]
+           ,[ENDLOCATION]
+           ,[LENGHT]
+           ,[IMAGE]) VALUES(");
+            commandText.Append("'");
+            commandText.Append(_track.TrackID);
+            commandText.Append("', '");
+            commandText.Append(_track.Deviceid);
+            commandText.Append("', '");
+            commandText.Append(_track.StartTime);
+            commandText.Append("', '");
+            commandText.Append(_track.EndTime);
+            commandText.Append("', '");
+            commandText.Append(_track.StartAddress);
+            commandText.Append("', '");
+            commandText.Append(_track.EndAddress);
+            commandText.Append("', '");
+            commandText.Append(_track.TraceLenght);
+            commandText.Append("', ");
+            commandText.Append("@IMAGE");
+            commandText.Append(")");
+            try
+            {
+                OpenConnection();
+                using (var sqlWrite = new SqlCommand(commandText.ToString(), connection))
+                {
+                    sqlWrite.Parameters.Add("@IMAGE", SqlDbType.VarBinary, resultImgInBytes.Length).Value = resultImgInBytes;
+                    sqlWrite.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e) { Console.WriteLine("DB query failed :  " + e.ToString()); }
+
+            //            <DEVICEID, int,>
+            //           ,<STARTTIMESTAMP, datetime,>
+            //           ,<ENDTIMESTAMP, datetime,>
+            //           ,<STARTLOCATION, nvarchar(50),>
+            //           ,<ENDLOCATION, nvarchar(50),>
+            //           ,<IMAGE, varbinary(max),>)
+        }
+        public void markCoordinatesAsProcessed(Track _track)
+        {
+            string listOfCoordIDs = "";
+            foreach (CoordinatesPointInTime coord in _track.Coordinates)
+            {
+                listOfCoordIDs += coord.CoordinateID.ToString() + ",";
+            }
+
+
+            StringBuilder commandText = new StringBuilder();
+
+            commandText.Append(@"UPDATE [dbo].[COORDINATES]
+   SET [TRACKCREATED] = '");
+            commandText.Append(_track.TrackID);
+            commandText.Append("' WHERE ID in (");
+            commandText.Append(listOfCoordIDs.Remove(listOfCoordIDs.Length - 1));
+            commandText.Append(")");
+            try
+            {
+                OpenConnection();
+                using (var sqlWrite = new SqlCommand(commandText.ToString(), connection))
+                {
+                    sqlWrite.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e) { Console.WriteLine("DB query failed :  " + e.ToString()); }
+
+        }
+        public List<Track> readTracks(int deviceID, int nrRows)
+        {
+            List<Track> outputTracks = new List<Track>();
+            DataTable container;
+            string commandText = string.Format(@"SELECT TOP " + nrRows + @" [ID]
+      ,[DEVICEID]
+      ,[STARTTIMESTAMP]
+      ,[ENDTIMESTAMP]
+      ,[STARTLOCATION]
+      ,[ENDLOCATION]
+      ,[IMAGE]
+      ,[LENGHT]
+  FROM [dbo].[TRACKS]
+  WHERE [DEVICEID] = " + deviceID.ToString());
+            container = QueryWrapper(commandText, "tracksFromDB");
+            if (container != null && container.Rows.Count > 0)
+            {
+                foreach (DataRow row in container.Rows)
+                {
+                    Track track = new Track();
+                    track.TrackID = row["ID"].ToString();
+                    byte[] imgBytes = (byte[])row["IMAGE"];
+                    System.ComponentModel.TypeConverter tc = System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Drawing.Image));
+                    track.Img = (System.Drawing.Image)tc.ConvertFrom(imgBytes);
+                    if (!string.IsNullOrEmpty(row["STARTTIMESTAMP"].ToString()))
+                    {
+                        track.StartTime = DateTime.Parse(row["STARTTIMESTAMP"].ToString());
+                    }
+                    if (!string.IsNullOrEmpty(row["ENDTIMESTAMP"].ToString()))
+                    {
+                        track.EndTime = DateTime.Parse(row["ENDTIMESTAMP"].ToString());
+                    }
+                    outputTracks.Add(track);
+                }
+                return outputTracks;
             }
             else return null;
         }

@@ -15,6 +15,7 @@
 
           var map;
           var vectorLineLayer;
+          var vectorLayer;
           var CurrentPage = 0;
           var nrPages = 0;
           var nrTracks = 0;
@@ -96,6 +97,20 @@
                           stroke: new ol.style.Stroke({ color: '#271f74', width: 5 })
                       })
                   });
+                  //var iconStyle = new ol.style.Style({
+                  //    image: new ol.style.Icon(/** @type {olx.style.IconOptions} */({
+                  //        anchor: [0.5, 46],
+                  //        anchorXUnits: 'fraction',
+                  //        anchorYUnits: 'pixels',
+                  //        opacity: 0.75,
+                  //        src: 'data/icon.png'
+                  //    }))
+                  //});
+
+                  //vectorLayer = new ol.layer.Vector({
+                  //    style: iconStyle
+                  //});
+                  //map.addLayer(vectorLayer);
                   map.addLayer(vectorLineLayer);
 
               }
@@ -145,10 +160,29 @@
 
           function Addpoints(points) {
               var pointArray = [];
+              //var pointArrayIcon = [];
               if (points.length > 0) {
                   for (var i = 0; i < points.length; i++) {
                       var point = ol.proj.transform([Number(points[i].lng.replace(",", ".")), Number(points[i].lat.replace(",", "."))], 'EPSG:4326', 'EPSG:3857')
                       pointArray.push(point);
+                      //if (i == 0) {
+                      //    var iconFeature = new ol.Feature({
+                      //        geometry: new ol.geom.Point(point),
+                      //        name: 'Poslední poloha',
+                      //        population: 4000,
+                      //        rainfall: 500
+                      //    });
+                      //    pointArrayIcon.push(iconFeature);
+                      //}
+                      //if (i == points.length - 1) {
+                      //    var iconFeature = new ol.Feature({
+                      //        geometry: new ol.geom.Point(point),
+                      //        name: 'Poslední poloha',
+                      //        population: 4000,
+                      //        rainfall: 500
+                      //    });
+                      //    pointArrayIcon.push(iconFeature);
+                      //}
                   }
 
                   var featureLine = new ol.Feature({
@@ -160,6 +194,7 @@
                   if (vectorLineLayer != null) {
                       vectorLineLayer.setSource(vectorLine);
                   }
+                  
                   
                   var extent = vectorLineLayer.getSource().getExtent();
                   //console.log(extent);
