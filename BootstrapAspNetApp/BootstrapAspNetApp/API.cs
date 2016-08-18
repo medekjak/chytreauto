@@ -52,6 +52,7 @@ namespace BootstrapAspNetApp
                     urlParameters.Append("|" + tr.Coordinates[i].Latitude.ToString() + "," + tr.Coordinates[i].Longitude.ToString());
                     if (i + 1 < tr.Coordinates.Count)
                     {
+
                         totalLen += measureDistance(tr.Coordinates[i].Latitude, tr.Coordinates[i].Longitude, tr.Coordinates[i + 1].Latitude, tr.Coordinates[i + 1].Longitude);
                     }
                 }
