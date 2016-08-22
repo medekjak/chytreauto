@@ -89,7 +89,6 @@ FROM    ( SELECT    ROW_NUMBER() OVER ( ORDER BY [ENDTIMESTAMP] desc ) AS RowNum
       ,[ENDTIMESTAMP]
       ,[STARTLOCATION]
       ,[ENDLOCATION]
-      ,[IMAGE]
       ,[LENGHT]
   FROM [dbo].[TRACKS] as tracks, dbo.CUSTOMER_DEVICE as CD, 
   dbo.CUSTOMER_USER as CU, dbo.aspnet_Users as U
@@ -106,9 +105,8 @@ ORDER BY RowNum";
                 {
                     Track track = new Track();
                     track.TrackID = row["ID"].ToString();
-                    byte[] imgBytes = (byte[])row["IMAGE"];
-                    System.ComponentModel.TypeConverter tc = System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Drawing.Image));
-                    track.Img = (System.Drawing.Image)tc.ConvertFrom(imgBytes);
+                    //byte[] imgBytes = (byte[])row["IMAGE"];
+                    //System.ComponentModel.TypeConverter tc = System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Drawing.Image));
                     if (!string.IsNullOrEmpty(row["STARTTIMESTAMP"].ToString()))
                     {
                         track.StartTime = DateTime.Parse(row["STARTTIMESTAMP"].ToString());
@@ -272,7 +270,7 @@ AND CU.USERID = U.UserId AND U.UserName ='" + userName + @"'";
         }
         public void storeTrack(Track _track)
         {
-            Byte[] resultImgInBytes = (Byte[])new System.Drawing.ImageConverter().ConvertTo(_track.Img, typeof(Byte[]));
+            //Byte[] resultImgInBytes = (Byte[])new System.Drawing.ImageConverter().ConvertTo(_track.Img, typeof(Byte[]));
             StringBuilder commandText = new StringBuilder();
 
             commandText.Append(@"INSERT INTO [dbo].[TRACKS]
@@ -282,8 +280,7 @@ AND CU.USERID = U.UserId AND U.UserName ='" + userName + @"'";
            ,[ENDTIMESTAMP]
            ,[STARTLOCATION]
            ,[ENDLOCATION]
-           ,[LENGHT]
-           ,[IMAGE]) VALUES(");
+           ,[LENGHT]) VALUES(");
             commandText.Append("'");
             commandText.Append(_track.TrackID);
             commandText.Append("', '");
@@ -298,15 +295,13 @@ AND CU.USERID = U.UserId AND U.UserName ='" + userName + @"'";
             commandText.Append(_track.EndAddress);
             commandText.Append("', '");
             commandText.Append(_track.TraceLenght);
-            commandText.Append("', ");
-            commandText.Append("@IMAGE");
+            commandText.Append("'");
             commandText.Append(")");
             try
             {
                 OpenConnection();
                 using (var sqlWrite = new SqlCommand(commandText.ToString(), connection))
                 {
-                    sqlWrite.Parameters.Add("@IMAGE", SqlDbType.VarBinary, resultImgInBytes.Length).Value = resultImgInBytes;
                     sqlWrite.ExecuteNonQuery();
                 }
             }
@@ -368,9 +363,9 @@ AND CU.USERID = U.UserId AND U.UserName ='" + userName + @"'";
                 {
                     Track track = new Track();
                     track.TrackID = row["ID"].ToString();
-                    byte[] imgBytes = (byte[])row["IMAGE"];
-                    System.ComponentModel.TypeConverter tc = System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Drawing.Image));
-                    track.Img = (System.Drawing.Image)tc.ConvertFrom(imgBytes);
+                    //byte[] imgBytes = (byte[])row["IMAGE"];
+                    //System.ComponentModel.TypeConverter tc = System.ComponentModel.TypeDescriptor.GetConverter(typeof(System.Drawing.Image));
+                    //track.Img = (System.Drawing.Image)tc.ConvertFrom(imgBytes);
                     if (!string.IsNullOrEmpty(row["STARTTIMESTAMP"].ToString()))
                     {
                         track.StartTime = DateTime.Parse(row["STARTTIMESTAMP"].ToString());

@@ -87,6 +87,7 @@
     <Content Include="js\bootstrap.js" />
     <Content Include="js\bootstrap.min.js" />
     <Content Include="js\npm.js" />
+    <Content Include="TaskScheduler.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -97,6 +98,7 @@
     <Compile Include="API.cs" />
     <Compile Include="CoordinatesPointInTime.cs" />
     <Compile Include="Database.cs" />
+    <Compile Include="DataProcessor.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Login.aspx.cs">
@@ -130,7 +132,13 @@
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="Adapters\TK102adapter.cs" />
-    <Compile Include="Scheduler.cs" />
+    <Compile Include="TaskScheduler.aspx.cs">
+      <DependentUpon>TaskScheduler.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TaskScheduler.aspx.designer.cs">
+      <DependentUpon>TaskScheduler.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Track.cs" />
     <Compile Include="Trasy.aspx.cs">
       <DependentUpon>Trasy.aspx</DependentUpon>

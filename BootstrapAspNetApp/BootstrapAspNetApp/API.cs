@@ -36,20 +36,20 @@ namespace BootstrapAspNetApp
         {
             return callAPI("lat=" + lat + "&lon=" + lon);
         }
-        public Image getMapAndCalculate(Track tr, out double totalLen)
+        public double CalculateLenght(Track tr)
         {
-            totalLen = 0;
+            double totalLen = 0;
 
-            WebClient webClient = new WebClient();
-            webClient.Headers.Add("User-Agent: Other");
+            //WebClient webClient = new WebClient();
+            //webClient.Headers.Add("User-Agent: Other");
 
-            string size = "600x200";
+            //string size = "600x200";
 
-                StringBuilder urlParameters = new StringBuilder();
-                urlParameters.Append("maptype=roadmap"+ "&size=" + size + "&path=color:0x0000ff|weight:5");
+            //    StringBuilder urlParameters = new StringBuilder();
+            //    urlParameters.Append("maptype=roadmap"+ "&size=" + size + "&path=color:0x0000ff|weight:5");
                 for (int i = 0; i < tr.Coordinates.Count; i++)
                 {
-                    urlParameters.Append("|" + tr.Coordinates[i].Latitude.ToString() + "," + tr.Coordinates[i].Longitude.ToString());
+                    //urlParameters.Append("|" + tr.Coordinates[i].Latitude.ToString() + "," + tr.Coordinates[i].Longitude.ToString());
                     if (i + 1 < tr.Coordinates.Count)
                     {
 
@@ -57,9 +57,9 @@ namespace BootstrapAspNetApp
                     }
                 }
 
-                byte[] buffer = webClient.DownloadData("http://maps.googleapis.com/maps/api/staticmap?" + urlParameters);
-                return (Image)((new ImageConverter()).ConvertFrom(buffer));
-
+                //byte[] buffer = webClient.DownloadData("http://maps.googleapis.com/maps/api/staticmap?" + urlParameters);
+                //return (Image)((new ImageConverter()).ConvertFrom(buffer));
+                return totalLen;
 
         }
         public double measureDistance(double lat1, double lon1, double lat2, double lon2)
