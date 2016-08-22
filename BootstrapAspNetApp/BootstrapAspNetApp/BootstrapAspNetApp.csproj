@@ -130,6 +130,7 @@
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="Adapters\TK102adapter.cs" />
+    <Compile Include="Scheduler.cs" />
     <Compile Include="Track.cs" />
     <Compile Include="Trasy.aspx.cs">
       <DependentUpon>Trasy.aspx</DependentUpon>

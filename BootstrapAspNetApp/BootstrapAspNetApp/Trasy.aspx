@@ -137,6 +137,32 @@
 
               });
           }
+          function LoadTrackPointsPicture(Track) {
+              var url;
+              //console.log(TrackID);
+              $.ajax({
+                  type: "POST",
+                  url: "GetTracks.asmx/GetTrackPoints",
+                  data: "{TrackID: '" + Track.TrackID + "'}",
+                  contentType: "application/json; charset=utf-8",
+                  dataType: "json",
+                  async: false,
+                  success: function (data, status) {
+                      var points = JSON.parse(data.d);
+                      
+                      url = getPictureUrl(points);
+                      drawTrack(Track, url);
+
+                  },
+                  error: function (request, status, error) {
+                      console.log(request.statusText);
+
+                  }
+
+              });
+
+
+          }
           function LoadTracks(pageNr) {
               $.ajax({
                   type: "POST",
@@ -156,6 +182,7 @@
 
               });
           }
+
           
 
           function Addpoints(points) {
@@ -203,19 +230,39 @@
               }
 
           }
+          function getPictureUrl(points) {
+              var url = "http://maps.googleapis.com/maps/api/staticmap?maptype=roadmap&size=600x200";
+              
+              //var pointArrayIcon = [];
+              if (points.length > 0) {
+                  url += "&path=color:0x0000ff|weight:5";
+                  for (var i = 0; i < points.length; i++) {
+                      url += "|" + points[i].lat + "," + points[i].lng;
+                   
+                  }
+
+              }
+              //console.log(url);
+              return url;
+
+          }
+          function drawTrack(track, url) {
+
+              var str1 = "<a href=# class=\"list-group-item\" onClick=\"LoadTrackPoints('";
+              var str2 = "')\"><img ID=\"Image1\" width=\"100%\"  src =\"";
+              var str4 = "\"/><p class=\"list-group-item-text\"><span class=\"glyphicon glyphicon-road\"></span>";
+              var str5 = "</p></a>";
+              var Pointoutput = str1 + track.TrackID + str2 + url + str4 + track.Endtime + str5;
+              console.log(Pointoutput);
+              $("#tracks").append(Pointoutput);
+
+          }
           function AddTracks(tracks) {
               if (tracks.length > 0) {
                   $("#tracks").children().remove();
 
-                  var str1 = "<a href=# class=\"list-group-item\" onClick=\"LoadTrackPoints('";
-                  var str2 = "')\"><img ID=\"Image1\" width=\"100%\"  src =\"";
-                  var str3 = "data:image/jpeg;base64,";
-                  var str4 = "\"/><p class=\"list-group-item-text\"><span class=\"glyphicon glyphicon-road\"></span>";
-                  var str5 = "</p></a>";
-
                   for (var i = 0; i < tracks.length; i++) {
-                      var Pointoutput = str1 + tracks[i].TrackID + str2 + str3 + tracks[i].Img + str4 + tracks[i].Endtime + str5;
-                      $("#tracks").append(Pointoutput);
+                      LoadTrackPointsPicture(tracks[i])
                   }
               }
 
