@@ -22,14 +22,14 @@ namespace BootstrapAspNetApp
         }
         private static void write(string message)
         {
-            MyDatabase db = new MyDatabase();
-            db.StoreToCommLog("LOG: " + message);
+            //MyDatabase db = new MyDatabase();
+            //db.StoreToCommLog("LOG: " + message);
 
-            //using (System.IO.StreamWriter file =
-            //new System.IO.StreamWriter(System.Web.Hosting.HostingEnvironment.MapPath("~/Log.txt"), true))
-            //{
-            //    file.WriteLine(DateTime.Now.ToString() + " : " + message);
-            //}
+            using (System.IO.StreamWriter file =
+            new System.IO.StreamWriter(System.Web.Hosting.HostingEnvironment.MapPath("~/Log.txt"), true))
+            {
+                file.WriteLine(DateTime.Now.ToString() + " : " + message);
+            }
             //System.IO.File.WriteLine(System.Web.Hosting.HostingEnvironment.MapPath("~/Log.txt"), DateTime.Now.ToString() + " : " + message);
         }
 

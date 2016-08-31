@@ -276,14 +276,13 @@ namespace BootstrapAspNetApp
             if (!string.Equals(ApiKey, "TestKey", StringComparison.CurrentCultureIgnoreCase))
             {
                 
+
             }
             else
             {
-                DataProcessor.ProcessTracks();          
-            
+                DataProcessor.ProcessTracks();            
             }
 
-        
         }
     }
     

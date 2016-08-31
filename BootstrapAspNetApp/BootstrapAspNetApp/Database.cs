@@ -5,11 +5,13 @@ using System.Web;
 using System.Data.SqlClient;
 using System.Data;
 using System.Text;
+using System.Globalization;
 
 namespace BootstrapAspNetApp
 {
     public class MyDatabase
     {
+        //.ToString("yyyy-MM-dd HH:mm:ss.fff")
         private int dbTimeout = 0;
         //private int DBRecordCountLimit = 1000;
         public SqlConnection connection = null;
@@ -18,15 +20,15 @@ namespace BootstrapAspNetApp
         public MyDatabase()
         {
 
-            try
-            {
-                connection = new SqlConnection(connectionString);
+            //try
+            //{
 
-            }
-            catch (Exception es)
-            {
-                Console.WriteLine("DB connection failed : " + es.ToString());
-            }
+
+            //}
+            //catch (Exception es)
+            //{
+            //    Console.WriteLine("DB connection failed : " + es.ToString());
+            //}
         }
         public void OpenConnection()
         {
@@ -41,41 +43,63 @@ namespace BootstrapAspNetApp
         }
         public DataTable QueryWrapper(string query, string TableName)
         {
-            DataTable result = new DataTable(TableName);
-            OpenConnection();
-            try
+            using (connection = new SqlConnection(connectionString))
             {
-
-                using (SqlDataAdapter dataAdapter = new SqlDataAdapter(query, connection))
+                DataTable result = new DataTable(TableName);
+                OpenConnection();
+                try
                 {
-                    dataAdapter.SelectCommand.CommandType = CommandType.Text;
-                    dataAdapter.SelectCommand.CommandTimeout = dbTimeout;
-                    dataAdapter.Fill(result);
 
+                    using (SqlDataAdapter dataAdapter = new SqlDataAdapter(query, connection))
+                    {
+                        dataAdapter.SelectCommand.CommandType = CommandType.Text;
+                        dataAdapter.SelectCommand.CommandTimeout = dbTimeout;
+                        dataAdapter.Fill(result);
+                    }
+                    
                 }
+                catch (Exception ex)
+                {
+                    Log.writeError("DB query failed :  " + query + "   " + ex.ToString());
+                    //Console.WriteLine("DB query failed :  " + query + "   " + ex.ToString());
+                    result = null;
+                }
+                return result;
+                
             }
-            catch (Exception ex)
-            {
-                Log.writeError("DB query failed :  " + query + "   " + ex.ToString());
-                //Console.WriteLine("DB query failed :  " + query + "   " + ex.ToString());
-                result = null;
-            }
-            return result;
+            
         }
         public void QueryWrapper(string query)
         {
-            OpenConnection();
-            try
+            using (connection = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand();
-                cmd.CommandText = query;
-                cmd.CommandType = CommandType.Text;
-                cmd.ExecuteNonQuery();
+
+
+            //        SqlDataAdapter cmd = new SqlDataAdapter();
+            //        using (var Command = new SqlCommand(query))
+            //        {
+            //            Command.Connection = connection;
+            //            cmd.UpdateCommand = Command;
+            //            connection.Open();
+            //            //.....
+            //            // .... you don't need to close the connection explicitely
+            //        }
+                try
+                {                   
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.CommandText = query;
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Connection = connection;
+                    connection.Open();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Log.writeError("DB query failed :  " + query + "   " + ex.ToString());
+                }
+
             }
-            catch (Exception ex)
-            {
-                Log.writeError("DB query failed :  " + query + "   " + ex.ToString());
-            }
+            
 
         }
         public List<Track> readTracks(string userName, int nrRowsStart, int nrRowsEnd)
@@ -197,9 +221,9 @@ AND CU.USERID = U.UserId AND U.UserName ='" + userName + @"'";
         }
         public void updateScheduleTime(string scheduleName)
         {
-            QueryWrapper("UPDATE [dbo].[SCHEDULES] SET [LASTRUNTIME] = '" + DateTime.UtcNow.ToString() + "' WHERE [NAME] = '"+scheduleName+"'");
+            QueryWrapper("UPDATE [dbo].[SCHEDULES] SET [LASTRUNTIME] = '" + DateTime.UtcNow + "' WHERE [NAME] = '" + scheduleName + "'");
         }
-        public void deleteLog(int daysThreshold)
+        public void deleteLog(double daysThreshold)
         {
             QueryWrapper("DELETE FROM [dbo].[COMMUNICATIONLOG]  WHERE [TIME] < '" + DateTime.UtcNow.AddDays(-(daysThreshold)) + "'");
         }
@@ -217,7 +241,7 @@ AND CU.USERID = U.UserId AND U.UserName ='" + userName + @"'";
         }
         public void StoreCoordinates(CoordinatesPointInTime Coordinates)
         {
-            QueryWrapper("INSERT INTO [dbo].[COORDINATES]    ([DEVICEID]  ,[TIMESTAMP]  , [LAT]   ,[LON]   ,[TRACKCREATED]) VALUES ('" + Coordinates.DeviceID + "','" + Coordinates.Time.ToString() + "','" + Coordinates.Latitude.ToString() + "','" + Coordinates.Longitude.ToString() + "',null)");
+            QueryWrapper("INSERT INTO [dbo].[COORDINATES]    ([DEVICEID]  ,[TIMESTAMP]  , [LAT]   ,[LON]   ,[TRACKCREATED]) VALUES ('" + Coordinates.DeviceID + "','" + Coordinates.Time + "','" + Coordinates.Latitude.ToString() + "','" + Coordinates.Longitude.ToString() + "',null)");
         }
         public void StoreEvent(Event _event)
         {
@@ -225,7 +249,7 @@ AND CU.USERID = U.UserId AND U.UserName ='" + userName + @"'";
         }
         public void StoreToCommLog(string message)
         {
-            QueryWrapper("INSERT INTO [dbo].[COMMUNICATIONLOG] ([TIME] ,[MESSAGE]) VALUES ('"+DateTime.UtcNow.ToString()+"' ,'" + message + "')");
+            QueryWrapper("INSERT INTO [dbo].[COMMUNICATIONLOG] ([TIME] ,[MESSAGE]) VALUES ('" + DateTime.UtcNow + "' ,'" + message + "')");
         }
         public DataTable GetNotProcessedCoordinates()
         {
@@ -276,7 +300,7 @@ AND CU.USERID = U.UserId AND U.UserName ='" + userName + @"'";
             commandText.Append("', '");
             commandText.Append(_track.EndAddress);
             commandText.Append("', '");
-            commandText.Append(_track.TraceLenght);
+            commandText.Append(_track.TraceLenght.ToString(CultureInfo.InvariantCulture));
             commandText.Append("'");
             commandText.Append(")");
 
