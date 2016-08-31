@@ -241,7 +241,7 @@ AND CU.USERID = U.UserId AND U.UserName ='" + userName + @"'";
         }
         public void StoreCoordinates(CoordinatesPointInTime Coordinates)
         {
-            QueryWrapper("INSERT INTO [dbo].[COORDINATES]    ([DEVICEID]  ,[TIMESTAMP]  , [LAT]   ,[LON]   ,[TRACKCREATED]) VALUES ('" + Coordinates.DeviceID + "','" + Coordinates.Time + "','" + Coordinates.Latitude.ToString() + "','" + Coordinates.Longitude.ToString() + "',null)");
+            QueryWrapper("INSERT INTO [dbo].[COORDINATES]    ([DEVICEID]  ,[TIMESTAMP]  , [LAT]   ,[LON]   ,[TRACKCREATED]) VALUES ('" + Coordinates.DeviceID + "','" + Coordinates.Time + "','" + Coordinates.Latitude.ToString(CultureInfo.InvariantCulture) + "','" + Coordinates.Longitude.ToString(CultureInfo.InvariantCulture) + "',null)");
         }
         public void StoreEvent(Event _event)
         {
