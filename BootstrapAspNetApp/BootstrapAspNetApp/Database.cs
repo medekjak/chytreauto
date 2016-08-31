@@ -62,7 +62,7 @@ namespace BootstrapAspNetApp
             }
             return result;
         }
-        public string QueryWrapper(string query)
+        public void QueryWrapper(string query)
         {
             OpenConnection();
             try
@@ -75,9 +75,8 @@ namespace BootstrapAspNetApp
             catch (Exception ex)
             {
                 Log.writeError("DB query failed :  " + query + "   " + ex.ToString());
-                return "DB query failed :  " + query + "   " + ex.ToString();
             }
-            return "";
+
         }
         public List<Track> readTracks(string userName, int nrRowsStart, int nrRowsEnd)
         {
@@ -190,6 +189,20 @@ AND CU.USERID = U.UserId AND U.UserName ='" + userName + @"'";
             }
             else return null;
         }
+        public DataTable readSchedules()
+        {
+            string query = @"SELECT [NAME], [LASTRUNTIME], [PERIOD] FROM [dbo].[SCHEDULES]";
+            return QueryWrapper(query, "schedules");
+
+        }
+        public void updateScheduleTime(string scheduleName)
+        {
+            QueryWrapper("UPDATE [dbo].[SCHEDULES] SET [LASTRUNTIME] = '" + DateTime.UtcNow.ToString() + "' WHERE [NAME] = '"+scheduleName+"'");
+        }
+        public void deleteLog(int daysThreshold)
+        {
+            QueryWrapper("DELETE FROM [dbo].[COMMUNICATIONLOG]  WHERE [TIME] < '" + DateTime.UtcNow.AddDays(-(daysThreshold)) + "'");
+        }
         public string getDeviceId(string imei)
         {
             DataTable container;
@@ -200,50 +213,19 @@ AND CU.USERID = U.UserId AND U.UserName ='" + userName + @"'";
                 return container.Rows[0][0].ToString();
                 Log.writeError("not known IMEI: " + imei);
             }
-
             else return "";
-
-
-
         }
         public void StoreCoordinates(CoordinatesPointInTime Coordinates)
         {
-            try
-            {
-                OpenConnection();
-                System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = "INSERT INTO [dbo].[COORDINATES]    ([DEVICEID]  ,[TIMESTAMP]  , [LAT]   ,[LON]   ,[TRACKCREATED]) VALUES ('" + Coordinates.DeviceID + "','" + Coordinates.Time.ToString() + "','" + Coordinates.Latitude.ToString() + "','" + Coordinates.Longitude.ToString() + "',null)";
-                cmd.Connection = connection;
-                cmd.ExecuteNonQuery();
-                connection.Close();
-            }
-            catch (Exception e)
-            {
-                // ConsoleApplication2.EventLogFile.writeLine(e.ToString());
-                Console.WriteLine(e.ToString());
-            }
-
+            QueryWrapper("INSERT INTO [dbo].[COORDINATES]    ([DEVICEID]  ,[TIMESTAMP]  , [LAT]   ,[LON]   ,[TRACKCREATED]) VALUES ('" + Coordinates.DeviceID + "','" + Coordinates.Time.ToString() + "','" + Coordinates.Latitude.ToString() + "','" + Coordinates.Longitude.ToString() + "',null)");
         }
         public void StoreEvent(Event _event)
         {
-            try
-            {
-
-                System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
-                cmd.CommandType = System.Data.CommandType.Text;
-                cmd.CommandText = "INSERT INTO [dbo].[EVENTS] ([EVENTTYPE] ,[TIMESTAMP] ,[STOREDTIMESTAMP] ,[DEVICEID]) VALUES ('" + _event.EventType + "' ,'" + _event.Time + "' ,'" + DateTime.UtcNow + "' ,'" + _event.Deviceid + "')";
-
-                cmd.Connection = connection;
-                cmd.ExecuteNonQuery();
-                connection.Close();
-            }
-            catch (Exception e)
-            {
-                // ConsoleApplication2.EventLogFile.writeLine(e.ToString());
-                Console.WriteLine(e.ToString());
-            }
-
+            QueryWrapper("INSERT INTO [dbo].[EVENTS] ([EVENTTYPE] ,[TIMESTAMP] ,[STOREDTIMESTAMP] ,[DEVICEID]) VALUES ('" + _event.EventType + "' ,'" + _event.Time + "' ,'" + DateTime.UtcNow + "' ,'" + _event.Deviceid + "')");
+        }
+        public void StoreToCommLog(string message)
+        {
+            QueryWrapper("INSERT INTO [dbo].[COMMUNICATIONLOG] ([TIME] ,[MESSAGE]) VALUES ('"+DateTime.UtcNow.ToString()+"' ,'" + message + "')");
         }
         public DataTable GetNotProcessedCoordinates()
         {
@@ -297,22 +279,9 @@ AND CU.USERID = U.UserId AND U.UserName ='" + userName + @"'";
             commandText.Append(_track.TraceLenght);
             commandText.Append("'");
             commandText.Append(")");
-            try
-            {
-                OpenConnection();
-                using (var sqlWrite = new SqlCommand(commandText.ToString(), connection))
-                {
-                    sqlWrite.ExecuteNonQuery();
-                }
-            }
-            catch (Exception e) { Console.WriteLine("DB query failed :  " + e.ToString()); }
 
-            //            <DEVICEID, int,>
-            //           ,<STARTTIMESTAMP, datetime,>
-            //           ,<ENDTIMESTAMP, datetime,>
-            //           ,<STARTLOCATION, nvarchar(50),>
-            //           ,<ENDLOCATION, nvarchar(50),>
-            //           ,<IMAGE, varbinary(max),>)
+            QueryWrapper(commandText.ToString());
+
         }
         public void markCoordinatesAsProcessed(Track _track)
         {
@@ -331,16 +300,9 @@ AND CU.USERID = U.UserId AND U.UserName ='" + userName + @"'";
             commandText.Append("' WHERE ID in (");
             commandText.Append(listOfCoordIDs.Remove(listOfCoordIDs.Length - 1));
             commandText.Append(")");
-            try
-            {
-                OpenConnection();
-                using (var sqlWrite = new SqlCommand(commandText.ToString(), connection))
-                {
-                    sqlWrite.ExecuteNonQuery();
-                }
-            }
-            catch (Exception e) { Console.WriteLine("DB query failed :  " + e.ToString()); }
 
+            QueryWrapper(commandText.ToString());
+            
         }
         public List<Track> readTracks(int deviceID, int nrRows)
         {

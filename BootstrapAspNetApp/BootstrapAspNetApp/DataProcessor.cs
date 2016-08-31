@@ -72,5 +72,10 @@ namespace BootstrapAspNetApp
 
             }
         }
+        public static void DeleteLog()
+        {
+            MyDatabase DB = new MyDatabase();
+            DB.deleteLog(2);
+        }
     }
 }

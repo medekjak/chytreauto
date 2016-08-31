@@ -75,8 +75,6 @@ namespace BootstrapAspNetApp
             var d = R * c;
             return d * 1000; // meters
         }
-
-
         public void GetMinMaxLatLon(double[,] data, out double maxLat, out double maxLon, out double minLat, out double minLon)
         {
             //0 - lat, 1 - lon
@@ -107,8 +105,6 @@ namespace BootstrapAspNetApp
             minLon = _minLon;
             maxLon = _maxLon;
         }
-
-   
     }
  
     [DataContract]

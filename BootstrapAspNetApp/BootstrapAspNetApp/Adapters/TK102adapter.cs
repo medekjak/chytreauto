@@ -11,12 +11,17 @@ namespace BootstrapAspNetApp
     {
         public static string ReplyMessage(string input)
         {
+            
+
             string response = "";
             string IMEI = "";
             string DeviceId = "";
             MyDatabase db = new MyDatabase();
             string[] notEvents = new string[] { "tracker", "gt", "nt", "dt" };
             string[] inputArrayAll= input.Split(";".ToCharArray());
+
+            db.StoreToCommLog("RECEIVED: " + input);
+
             if (inputArrayAll.Length == 2 && inputArrayAll[0].Split(",".ToCharArray())[0] == "##")
             {
                 //LOGIN
@@ -24,6 +29,7 @@ namespace BootstrapAspNetApp
                 if (DeviceId != "")
                 {
                     response = "LOAD";
+                    db.StoreToCommLog("SENT: " + response);
                     return response;
                 }
                 else return "";
@@ -72,9 +78,10 @@ namespace BootstrapAspNetApp
 
                     
                 }
+                db.StoreToCommLog("SENT: " + response);
+                return response;
             }
-
-            return response;
+            
  
             //return "**,imei:" + inputArray[1] + ",B";
             //return output.ToString();
