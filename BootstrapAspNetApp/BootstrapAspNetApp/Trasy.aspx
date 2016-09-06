@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.7.0/ol.css" type="text/css">
+    <link rel="stylesheet" href="css/StyleSheet.css" type="text/css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/3.7.0/ol.js"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder_body" runat="server">
@@ -247,10 +248,11 @@
 
           }
           function drawTrack(track, url) {
-
-              var str1 = "<a href=# class=\"list-group-item\" onClick=\"LoadTrackPoints('";
+              //class=\"list-group-item\"
+              //class=\"list-group-item-text\"
+              var str1 = "<a href=#  onClick=\"LoadTrackPoints('";
               var str2 = "')\"><img ID=\"Image1\" width=\"100%\"  src =\"";
-              var str4 = "\"/><p class=\"list-group-item-text\"><span class=\"glyphicon glyphicon-road\"></span>";
+              var str4 = "\"/><p ><span class=\"glyphicon glyphicon-road\"></span>";
               var str5 = "</p></a>";
               var Pointoutput = str1 + track.TrackID + str2 + url + str4 + track.Endtime + str5;
               console.log(Pointoutput);
@@ -273,7 +275,7 @@
 
            
         <div class="row">
-            <div class="col-sm-3">
+            <div class="col-sm-3 my-column" >
                 <div  id="tracks">
                     </div>
                  <ul class="pager">
@@ -281,7 +283,7 @@
     <li><a href="#" id="next">starší</a></li>
   </ul>
                 </div>
-            <div class="col-sm-9">
+            <div class="col-sm-9 my-column">
                <div id="mapCanvas" style="height: 100%;"></div>
             </div>
 
