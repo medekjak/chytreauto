@@ -32,7 +32,7 @@ namespace BootstrapAspNetApp
                 userName = User.Identity.Name;
             }
             else userName = "Administrator";
-            Log.writeDebug("TRACKID: " + TrackID);
+          //  Log.writeDebug("TRACKID: " + TrackID);
 
             DataTable dtPoints;
             MyDatabase db = new MyDatabase();
@@ -42,7 +42,7 @@ namespace BootstrapAspNetApp
             if (!string.IsNullOrEmpty(TrackID))
             {
                 dtPoints = db.readTrackCoordinates(TrackID, userName);
-                Log.writeDebug("nr of points received: " + dtPoints.Rows.Count.ToString());
+             //   Log.writeDebug("nr of points received: " + dtPoints.Rows.Count.ToString());
                 if (dtPoints != null && dtPoints.Rows.Count > 0)
                 {
                     foreach (DataRow dr in dtPoints.Rows)
@@ -60,7 +60,7 @@ namespace BootstrapAspNetApp
             }
             
             answer = answer.Remove(answer.Length - 1) + " ]";
-            Log.writeDebug("coordinates returned: " + answer);
+        //    Log.writeDebug("coordinates returned: " + answer);
             return answer;
             
         }
@@ -105,7 +105,7 @@ namespace BootstrapAspNetApp
         [WebMethod]
         public string GetTracks(int PageNr)
         {
-            Log.writeDebug("GetTracks received parameter : " + PageNr.ToString());
+           // Log.writeDebug("GetTracks received parameter : " + PageNr.ToString());
             string userName = "";
             if (User.Identity.IsAuthenticated)
             {
@@ -117,7 +117,7 @@ namespace BootstrapAspNetApp
             MyDatabase db = new MyDatabase();
 
             int tracksCount = db.readTracksCount(userName);
-            Log.writeDebug("received tracks from db : " + tracksCount);
+           // Log.writeDebug("received tracks from db : " + tracksCount);
             
             if (tracksCount < 1 || PageNr < 1)
             {
@@ -153,7 +153,7 @@ namespace BootstrapAspNetApp
                     }
                     else
                     {
-                        Log.writeDebug("track count : " + tracks.Count.ToString());
+                       // Log.writeDebug("track count : " + tracks.Count.ToString());
                         StringBuilder outMessage = new StringBuilder();
                         outMessage.Append("[");
                         foreach (Track tr in tracks)
@@ -268,7 +268,10 @@ namespace BootstrapAspNetApp
         [WebMethod]
         public string StoreData(string ApiKey, string data)
         {
-            return TK102adapter.ReplyMessage(data);
+            Log.writeDebug(data);
+            string reply = TK102adapter.ReplyMessage(data);
+            Log.writeDebug(reply);
+            return reply;
         }
         [WebMethod]
         public void ProcessData(string ApiKey)

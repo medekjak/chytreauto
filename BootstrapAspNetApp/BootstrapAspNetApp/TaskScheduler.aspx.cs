@@ -12,7 +12,7 @@ namespace BootstrapAspNetApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Log.writeDebug("taskscheduler run");
+            //Log.writeDebug("taskscheduler run");
             MyDatabase db = new MyDatabase();
             DataTable schedules =  db.readSchedules();
             foreach (DataRow schedule in schedules.Rows)
