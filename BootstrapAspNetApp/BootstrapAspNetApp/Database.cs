@@ -16,7 +16,6 @@ namespace BootstrapAspNetApp
         //private int DBRecordCountLimit = 1000;
         public SqlConnection connection = null;
         private string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["MAINSYSTEMConnectionString"].ConnectionString;
-
         public MyDatabase()
         {
 
@@ -234,8 +233,9 @@ AND CU.USERID = U.UserId AND U.UserName ='" + userName + @"'";
             container = QueryWrapper(commandText, "deviceId");
             if (container != null && container.Rows.Count > 0)
             {
-                return container.Rows[0][0].ToString();
                 Log.writeError("not known IMEI: " + imei);
+                return container.Rows[0][0].ToString();
+                
             }
             else return "";
         }
@@ -251,6 +251,24 @@ AND CU.USERID = U.UserId AND U.UserName ='" + userName + @"'";
         {
             QueryWrapper("INSERT INTO [dbo].[COMMUNICATIONLOG] ([TIME] ,[MESSAGE]) VALUES ('" + DateTime.UtcNow + "' ,'" + message + "')");
         }
+        public void UpdateCommServerLastCommunication()
+        {
+            QueryWrapper("UPDATE [dbo].[COMMSERVER] SET [LASTCOMMUNICATION] = '" + DateTime.UtcNow + "' ,[ISUP] = 1 WHERE ID = 1");
+        }
+        public DataTable GetCommServerLastCommunication()
+        {
+            return QueryWrapper("SELECT * FROM [dbo].[COMMSERVER]", "CommServerLastCommunication");
+        }
+        public void UpdateCommServerDown()
+        {
+            QueryWrapper("UPDATE [dbo].[COMMSERVER] SET [ISUP] = 0 WHERE ID = 1");
+        }
+        public void UpdateDeviceLastCommunication(string deviceId)
+        {
+            QueryWrapper("UPDATE [dbo].[DEVICE] SET [LASTCOMMUNICATION] = = '" + DateTime.UtcNow + "' WHERE ID = " + int.Parse(deviceId) );
+        }
+
+        //UPDATE [dbo].[DEVICE] SET [LASTCOMMUNICATION] = '' WHERE ID = ''
         public DataTable GetNotProcessedCoordinates()
         {
             DataTable container;

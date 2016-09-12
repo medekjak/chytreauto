@@ -266,6 +266,27 @@ namespace BootstrapAspNetApp
                 
         }
         [WebMethod]
+        public void CommHeartBeat(string ApiKey, string Message)
+        {
+
+            if (!string.Equals(ApiKey, "TestKey", StringComparison.CurrentCultureIgnoreCase))
+            {
+
+
+            }
+            else
+            {
+                 MyDatabase db = new MyDatabase();
+                 db.UpdateCommServerLastCommunication();
+                 if (!string.Equals(Message, "OK", StringComparison.CurrentCultureIgnoreCase))
+                 {
+                     Log.writeError(Message);
+                 }
+                
+            }
+
+        }
+        [WebMethod]
         public string StoreData(string ApiKey, string data)
         {
             Log.writeDebug(data);

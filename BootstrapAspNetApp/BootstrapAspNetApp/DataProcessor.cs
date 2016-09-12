@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Data;
 
 namespace BootstrapAspNetApp
 {
@@ -76,6 +77,24 @@ namespace BootstrapAspNetApp
         {
             MyDatabase DB = new MyDatabase();
             DB.deleteLog(2);
+        }
+        public static void CheckCommServerHeartBeat()
+        {
+            MyDatabase DB = new MyDatabase();
+            DataTable commInfo = DB.GetCommServerLastCommunication();
+            if (commInfo == null || commInfo.Rows.Count < 1)
+            {
+                Log.writeError("no commInformation in db");
+            }
+            else
+            {
+                if ((DateTime)commInfo.Rows[0]["LASTCOMMUNICATION"] < DateTime.UtcNow.AddHours(-2) && (bool)commInfo.Rows[0]["ISUP"] == true)
+                {
+                    DB.UpdateCommServerDown();
+                    Log.writeError("Communication Server is Down!");
+                }
+            }
+
         }
     }
 }

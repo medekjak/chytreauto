@@ -29,7 +29,8 @@ namespace BootstrapAspNetApp
                                 break;
                             case "DeleteLog": DataProcessor.DeleteLog();
                                 break;
-
+                            case "CheckCommServerHeartBeat": DataProcessor.CheckCommServerHeartBeat();
+                                break;
                         }
 
                         db.updateScheduleTime(schedule["NAME"].ToString());

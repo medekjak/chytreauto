@@ -28,6 +28,7 @@ namespace BootstrapAspNetApp
                 if (!string.IsNullOrEmpty(DeviceId))
                 {
                     response = "LOAD";
+                    db.UpdateDeviceLastCommunication(DeviceId);
                     return response;
                 }
                 else
@@ -50,6 +51,7 @@ namespace BootstrapAspNetApp
                             DeviceId = db.getDeviceId(IMEI = inputArray[0]);
                             if (!string.IsNullOrEmpty(DeviceId))
                             {
+                                db.UpdateDeviceLastCommunication(DeviceId);
                                 response = "**,imei:" + IMEI + ",G";
                             }
                             else
@@ -70,6 +72,7 @@ namespace BootstrapAspNetApp
                                     Log.writeError("unknown device IMEI :" + IMEI);
                                     return "";
                                 }
+                                db.UpdateDeviceLastCommunication(DeviceId);
                                 DateTime timeOfposition = new DateTime();
                                 string formatString = "yyMMddHHmmss";
 
