@@ -233,11 +233,15 @@ AND CU.USERID = U.UserId AND U.UserName ='" + userName + @"'";
             container = QueryWrapper(commandText, "deviceId");
             if (container != null && container.Rows.Count > 0)
             {
-                Log.writeError("not known IMEI: " + imei);
-                return container.Rows[0][0].ToString();
                 
+                return container.Rows[0][0].ToString();
+
             }
-            else return "";
+            else
+            {
+                Log.writeError("not known IMEI: " + imei);
+                return "";
+            }
         }
         public void StoreCoordinates(CoordinatesPointInTime Coordinates)
         {
@@ -265,7 +269,7 @@ AND CU.USERID = U.UserId AND U.UserName ='" + userName + @"'";
         }
         public void UpdateDeviceLastCommunication(string deviceId)
         {
-            QueryWrapper("UPDATE [dbo].[DEVICE] SET [LASTCOMMUNICATION] = = '" + DateTime.UtcNow + "' WHERE ID = " + int.Parse(deviceId) );
+            QueryWrapper("UPDATE [dbo].[DEVICE] SET [LASTCOMMUNICATION] = '" + DateTime.UtcNow + "' WHERE ID = " + int.Parse(deviceId) );
         }
 
         //UPDATE [dbo].[DEVICE] SET [LASTCOMMUNICATION] = '' WHERE ID = ''

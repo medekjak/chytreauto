@@ -278,7 +278,7 @@ namespace BootstrapAspNetApp
             {
                  MyDatabase db = new MyDatabase();
                  db.UpdateCommServerLastCommunication();
-                 if (!string.Equals(Message, "OK", StringComparison.CurrentCultureIgnoreCase))
+                 if (!string.IsNullOrEmpty(Message))
                  {
                      Log.writeError(Message);
                  }
