@@ -83,6 +83,7 @@ namespace ServerLibrary
                             stream.Write(msg, 0, msg.Length);
                             //Console.WriteLine("Sent: " + outMessage);
                             EventLog.writeLine("Sent: " + outMessage);
+                            //tr
                         }
                     }
 
