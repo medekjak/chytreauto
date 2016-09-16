@@ -1,0 +1,16 @@
+C:\Users\Kuba\Desktop\tester\obj\Debug\tester.csprojResolveAssemblyReference.cache
+C:\Users\Kuba\Desktop\tester\bin\Debug\tester.exe.config
+C:\Users\Kuba\Desktop\tester\bin\Debug\tester.exe
+C:\Users\Kuba\Desktop\tester\bin\Debug\tester.pdb
+C:\Users\Kuba\Desktop\tester\bin\Debug\ServerLibrary.dll
+C:\Users\Kuba\Desktop\tester\bin\Debug\ServerLibrary.pdb
+C:\Users\Kuba\Desktop\tester\obj\Debug\tester.exe
+C:\Users\Kuba\Desktop\tester\obj\Debug\tester.pdb
+D:\tester\tester\obj\Debug\tester.csprojResolveAssemblyReference.cache
+D:\tester\tester\obj\Debug\tester.exe
+D:\tester\tester\obj\Debug\tester.pdb
+D:\tester\tester\bin\Debug\tester.exe.config
+D:\tester\tester\bin\Debug\tester.exe
+D:\tester\tester\bin\Debug\tester.pdb
+D:\tester\tester\bin\Debug\ServerLibrary.dll
+D:\tester\tester\bin\Debug\ServerLibrary.pdb

@@ -1,0 +1,15 @@
+C:\Users\Kuba\Desktop\TCPService\ServerLibrary\bin\Debug\ServerLibrary.dll
+C:\Users\Kuba\Desktop\TCPService\ServerLibrary\bin\Debug\ServerLibrary.pdb
+C:\Users\Kuba\Desktop\TCPService\ServerLibrary\obj\Debug\ServerLibrary.csprojResolveAssemblyReference.cache
+C:\Users\Kuba\Desktop\TCPService\ServerLibrary\obj\Debug\ServerLibrary.dll
+C:\Users\Kuba\Desktop\TCPService\ServerLibrary\obj\Debug\ServerLibrary.pdb
+D:\TCPService\ServerLibrary\obj\Debug\ServerLibrary.dll
+D:\TCPService\ServerLibrary\obj\Debug\ServerLibrary.pdb
+D:\TCPService\ServerLibrary\bin\Debug\ServerLibrary.dll
+D:\TCPService\ServerLibrary\bin\Debug\ServerLibrary.pdb
+D:\TCPService\ServerLibrary\obj\Debug\ServerLibrary.csprojResolveAssemblyReference.cache
+D:\AAA_GIT\chytreauto\TCPService\ServerLibrary\bin\Debug\ServerLibrary.dll
+D:\AAA_GIT\chytreauto\TCPService\ServerLibrary\bin\Debug\ServerLibrary.pdb
+D:\AAA_GIT\chytreauto\TCPService\ServerLibrary\obj\Debug\ServerLibrary.csprojResolveAssemblyReference.cache
+D:\AAA_GIT\chytreauto\TCPService\ServerLibrary\obj\Debug\ServerLibrary.dll
+D:\AAA_GIT\chytreauto\TCPService\ServerLibrary\obj\Debug\ServerLibrary.pdb
